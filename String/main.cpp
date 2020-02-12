@@ -126,7 +126,7 @@ String operator+(const String& str1, const String& str2)
 }
 
 //#define BEGINNING
-#define CONCAT
+#define CONCAT_AND_INPUT_CHECK
 //#define MOVE_CONSTRUCTOR_AND_ASSIGNMENT
 int main()
 {
@@ -148,7 +148,7 @@ int main()
 	/*str2.print();*/
 #endif // BEGINNING
 
-#ifdef CONCAT
+#ifdef CONCAT_AND_INPUT_CHECK
 	String str1("slava");
 	String str2;
 	std::cin >> str2;
@@ -157,7 +157,7 @@ int main()
 	String str3 = str1 + str2;
 	std::cout << "\n----------------------------\n";
 	std::cout << str3 << std::endl;
-#endif // CONCAT
+#endif // CONCAT_AND_INPUT_CHECK
 
 #ifdef MOVE_CONSTRUCTOR_AND_ASSIGNMENT
 
