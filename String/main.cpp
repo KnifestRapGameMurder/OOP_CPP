@@ -1,4 +1,5 @@
 #include<iostream>
+#include<cstring>
 
 class String;
 
@@ -20,7 +21,7 @@ public:
 		std::cout << "DefaultConstructor:\t" << this << std::endl;
 	}
 
-	String(const char* str) :size(size + 1), str(new char[size] {})
+	String(const char* str) :size(strlen(str) + 1), str(new char[size] {})
 	{
 		for (int i = 0; i < size; i++)	this->str[i] = str[i];
 		std::cout << "Constructor:\t" << this << std::endl;
@@ -32,8 +33,10 @@ public:
 		std::cout << "CopyConstructor:\t" << this << std::endl;
 	}
 
-	String(String&& other) :size(size), str(str)
+	String(String&& other)
 	{
+		this->size = other.size;
+		this->str = other.str;
 		other.str = nullptr;
 		std::cout << "MoveConstructor:\t" << this << std::endl;
 	}
@@ -44,8 +47,7 @@ public:
 		std::cout << "Destructor:\t" << this << std::endl;
 	}
 
-	String& operatorchar()
-	{		}
+
 
 	String& operator=(const String& other)
 	{
@@ -126,7 +128,7 @@ String operator+(const String& str1, const String& str2)
 //#define BEGINNING
 #define CONCAT
 //#define MOVE_CONSTRUCTOR_AND_ASSIGNMENT
-void main()
+int main()
 {
 #ifdef BEGINNING
 	String str1;
@@ -160,7 +162,7 @@ void main()
 	String str1 = String("Ukr");
 	std::cout << str1 << std::endl;
 #endif // MOVE_CONSTRUCTOR_AND_ASSIGNMENT
-
+	return 1;
 }
 
 
