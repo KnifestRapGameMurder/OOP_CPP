@@ -24,36 +24,22 @@ public:
 	}
 
 	//		CONSTRUCTORS
-	String(int size = 80) :size(size), str(new char[size] {})
-	{
-		std::cout << "DefaultConstructor:\t" << this << std::endl;
-	}
+	explicit String(int size = 80) :size(size), str(new char[size] {})
+	{	std::cout << "DefaultConstructor:\t" << this << std::endl;}
 
-	String(const char* str) :size(strlen(str) + 1), str(new char[size] {})
-	{
-		for (int i = 0; i < size; i++)	this->str[i] = str[i];
-		std::cout << "Constructor:\t" << this << std::endl;
-	}
+	String(const char* str) :String(strlen(str)+1)
+	{	for (int i = 0; i < size; i++)	this->str[i] = str[i];
+		std::cout << "Constructor:\t" << this << std::endl;}
 
-	String(const String& other) :String()
-	{
-		for (int i = 0; i < size; i++)	this->str[i] = other.str[i];
-		std::cout << "CopyConstructor:\t" << this << std::endl;
-	}
+	String(const String& other) :String(other.str)
+	{	std::cout << "CopyConstructor:\t" << this << std::endl;}
 
-	String(String&& other)
-	{
-		this->size = other.size;
-		this->str = other.str;
-		other.str = nullptr;
-		std::cout << "MoveConstructor:\t" << this << std::endl;
-	}
+	String(String&& other) :size(other.size), str(other.str)
+	{	other.str = nullptr;
+		std::cout << "MoveConstructor:\t" << this << std::endl;}
 
-	~String()
-	{
-		delete[] this->str;
-		std::cout << "Destructor:\t" << this << std::endl;
-	}
+	~String(){	delete[] this->str;
+		std::cout << "Destructor:\t" << this << std::endl;}
 
 
 
@@ -140,7 +126,7 @@ String operator+(const String& str1, const String& str2)
 	strcat(newstring.get_str(), str2.get_str());
 	return newstring;*/
 
-	String cat = str1.get_size() + str2.get_size() - 1;
+	String cat(str1.get_size() + str2.get_size() - 1);
 	for (int i = 0; i < str1.get_size(); i++)
 	{
 		cat[i] = str1[i];
@@ -156,14 +142,14 @@ bool operator<(const String& left, const String& right)
 {
 	return strcmp(left.get_str(), right.get_str()) < 0 ? true : false;
 }
-bool operator<(const String& left, const String& right)
+bool operator>(const String& left, const String& right)
 {
 	return strcmp(left.get_str(), right.get_str()) > 0 ? true : false;
 }
 
 //#define BEGINNING
 //#define CONCAT_AND_INPUT_CHECK
-//#define MOVE_CONSTRUCTOR_AND_ASSIGNMENT
+#define MOVE_CONSTRUCTOR_AND_ASSIGNMENT
 //#define INPUT_CHECK
 void main()
 {
@@ -199,8 +185,11 @@ void main()
 
 #ifdef MOVE_CONSTRUCTOR_AND_ASSIGNMENT
 
-	String str1 = String("Ukr");
-	std::cout << str1 << std::endl;
+	String str1("Hello ");
+	String str2("World");
+	std::cout << "\n----------------------\n";
+	std::cout << (str1+str2) << std::endl;
+	std::cout << "\n----------------------\n";
 #endif // MOVE_CONSTRUCTOR_AND_ASSIGNMENT
 #ifdef INPUT_CHECK
 
@@ -211,9 +200,7 @@ void main()
 
 #endif // INPUT_CHECK
 
-	String str1 = "Hello";
+	/*String str1 = "Hello";
 	String str2 = "World";
-	std::cout << (str1 < str2) << std::endl;
+	std::cout << (str1 < str2) << std::endl;*/
 }
-
-
