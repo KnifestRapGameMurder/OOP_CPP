@@ -100,9 +100,9 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
 	return os << obj.get_str();
 }
 
-std::istream& operator>>(std::istream& os, const String& obj)
+std::istream& operator>>(std::istream& is,String& obj)
 {
-	return os >> obj.get_str();
+	
 }
 
 String operator+(const String& str1, const String& str2)
