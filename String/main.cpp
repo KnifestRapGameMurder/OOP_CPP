@@ -103,6 +103,20 @@ public:
 	}
 };
 
+bool operator==(const String& left, const String& right)
+{
+	if (strlen(left.get_str()) != strlen(right.get_str()))return false;
+	for(int i=0;left[i];i++)
+	{
+		if (left[i] != right[i])return false;
+	}
+	return true;
+}
+bool operator!=(const String& left, const String& right)
+{
+	return !(left == right);
+}
+
 std::ostream& operator<<(std::ostream& os, const String& obj)
 {
 	return os << obj.get_str();
@@ -138,10 +152,20 @@ String operator+(const String& str1, const String& str2)
 	return cat;
 }
 
+bool operator<(const String& left, const String& right)
+{
+	return strcmp(left.get_str(), right.get_str()) < 0 ? true : false;
+}
+bool operator<(const String& left, const String& right)
+{
+	return strcmp(left.get_str(), right.get_str()) > 0 ? true : false;
+}
+
 //#define BEGINNING
 //#define CONCAT_AND_INPUT_CHECK
 //#define MOVE_CONSTRUCTOR_AND_ASSIGNMENT
-int main()
+//#define INPUT_CHECK
+void main()
 {
 #ifdef BEGINNING
 	String str1;
@@ -178,13 +202,18 @@ int main()
 	String str1 = String("Ukr");
 	std::cout << str1 << std::endl;
 #endif // MOVE_CONSTRUCTOR_AND_ASSIGNMENT
+#ifdef INPUT_CHECK
 
 	String str = "Hello";
 	std::cout << str << std::endl;
 	std::cin >> str;
 	std::cout << str << std::endl;
 
-	return 1;
+#endif // INPUT_CHECK
+
+	String str1 = "Hello";
+	String str2 = "World";
+	std::cout << (str1 < str2) << std::endl;
 }
 
 
