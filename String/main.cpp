@@ -14,6 +14,14 @@ public:
 	int get_size()const { return size; }
 	const char* get_str()const { return str; }
 	char* get_str() { return str; }
+	//	SET METHODS
+	void set_str(const char* str)
+	{
+		delete[] this->str;
+		this->size = strlen(str)+1;
+		this->str = new char[size] {};
+		strcpy_s(this->str, this->size, str);
+	}
 
 	//		CONSTRUCTORS
 	String(int size = 80) :size(size), str(new char[size] {})
@@ -102,7 +110,12 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
 
 std::istream& operator>>(std::istream& is,String& obj)
 {
-	return is >> obj.get_str();
+	char* str = new char[20] {};
+	is >> str;
+	str = (char*)realloc(str,30);
+	obj.set_str(str);
+	delete[] str;
+	return is;
 }
 
 String operator+(const String& str1, const String& str2)
@@ -126,7 +139,7 @@ String operator+(const String& str1, const String& str2)
 }
 
 //#define BEGINNING
-#define CONCAT_AND_INPUT_CHECK
+//#define CONCAT_AND_INPUT_CHECK
 //#define MOVE_CONSTRUCTOR_AND_ASSIGNMENT
 int main()
 {
@@ -149,8 +162,9 @@ int main()
 #endif // BEGINNING
 
 #ifdef CONCAT_AND_INPUT_CHECK
-	String str1("slava");
+	String str1("Slava ");
 	String str2;
+	std::cout << "Input str2: ";
 	std::cin >> str2;
 	std::cout << std::endl;
 	std::cout << "\n----------------------------\n";
@@ -164,6 +178,12 @@ int main()
 	String str1 = String("Ukr");
 	std::cout << str1 << std::endl;
 #endif // MOVE_CONSTRUCTOR_AND_ASSIGNMENT
+
+	String str = "Hello";
+	std::cout << str << std::endl;
+	std::cin >> str;
+	std::cout << str << std::endl;
+
 	return 1;
 }
 
