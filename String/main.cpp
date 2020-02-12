@@ -102,7 +102,7 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
 
 std::istream& operator>>(std::istream& is,String& obj)
 {
-	
+	return is >> obj.get_str();
 }
 
 String operator+(const String& str1, const String& str2)
@@ -150,7 +150,9 @@ int main()
 
 #ifdef CONCAT
 	String str1("slava");
-	String str2("Ukraini");
+	String str2;
+	std::cin >> str2;
+	std::cout << std::endl;
 	std::cout << "\n----------------------------\n";
 	String str3 = str1 + str2;
 	std::cout << "\n----------------------------\n";
