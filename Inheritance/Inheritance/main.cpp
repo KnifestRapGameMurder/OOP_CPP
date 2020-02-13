@@ -8,7 +8,7 @@ class Box
 	bool closed;
 public:
 			//	Constructors:
-	Box(double width=2,double length=2, double height=1) :width(width),length(length), height(height), closed(true)
+	Box(double width,double length, double height) :width(width),length(length), height(height), closed(true)
 	{	std::cout << "BoxConstructor:\t" << this << std::endl;}
 	~Box()
 	{	std::cout << "BoxDestructor:\t" << this << std::endl;}
@@ -30,7 +30,17 @@ public:
 
 class GiftBox :public Box
 {
-
+	std::string color;
+	bool bant;
+public:
+	GiftBox(double width, double length, double height, std::string color) :Box(width,length,height)
+	{
+		std::cout << "GBConstructor:\t" <<this<< std::endl;
+	}
+	~GiftBox()
+	{
+		std::cout << "GBDestructor:\t" <<this<< std::endl;
+	}
 };
 
 void main()
@@ -41,6 +51,6 @@ void main()
 	box1.close();
 	box1.get_status();
 
-	GiftBox box2;
+	GiftBox box2(2,2,1,"green");
 	box2.get_status();
 }
