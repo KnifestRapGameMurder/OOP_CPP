@@ -8,10 +8,10 @@ class Box
 	bool closed;
 public:
 			//	Constructors:
-	Box(double width,double length, double height) :width(width),length(length), height(height), closed(true)
+	Box(double width=2,double length=2, double height=1) :width(width),length(length), height(height), closed(true)
 	{	std::cout << "BoxConstructor:\t" << this << std::endl;}
 	~Box()
-	{	std::cout << "BoxDestructor" << this << std::endl;}
+	{	std::cout << "BoxDestructor:\t" << this << std::endl;}
 
 			//	Methods:
 	void open()
@@ -28,8 +28,19 @@ public:
 	}
 };
 
+class GiftBox :public Box
+{
+
+};
+
 void main()
 {
 	Box box1(1.2, 2.3, 3.4);
+	box1.open();
+	box1.get_status();
+	box1.close();
+	box1.get_status();
 
+	GiftBox box2;
+	box2.get_status();
 }
