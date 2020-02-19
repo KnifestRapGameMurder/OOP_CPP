@@ -177,6 +177,5 @@ void main()
 	human.print();
 	Student stud("Тупенко", "Васыль", 18, "Дизайн", "СТ ДВ 37");
 	stud.print();
-	Teacher teacher("Умненко", "Петро", 65, "Дизайн", 5, 1000000);
-	teacher.print();
+	Teacher ("Умненко", "Петро", 65, "Дизайн", 5, 1000000).print();
 }
