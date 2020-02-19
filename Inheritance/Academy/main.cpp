@@ -138,7 +138,7 @@ public:
 	{
 		this->subject = subject;
 	}
-	void set_number_of_groups(unsigned int number_of_groups)
+	void set_experience(unsigned int number_of_groups)
 	{
 		this->experience = number_of_groups;
 	}
@@ -154,7 +154,7 @@ public:
 	) : Human(last_name, first_name, age)
 	{
 		set_subject(subject);
-		set_number_of_groups(number_of_groups);
+		set_experience(number_of_groups);
 		this->evil = 20;
 		std::cout << "TCounstructor:\t" << this << std::endl;
 	}
