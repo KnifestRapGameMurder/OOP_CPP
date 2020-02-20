@@ -6,6 +6,16 @@ class Human
 	std::string last_name;
 	std::string first_name;
 	unsigned int age;
+private:
+	void set_last_name(const std::string& last_name)
+	{
+
+		this->last_name = last_name;
+	}
+	void set_first_name(const std::string& first_name)
+	{
+		this->first_name = first_name;
+	}
 public:
 	const std::string& get_last_name()const
 	{
@@ -18,14 +28,6 @@ public:
 	unsigned int get_age()const
 	{
 		return age;
-	}
-	void set_last_name(const std::string& last_name)
-	{
-		this->last_name = last_name;
-	}
-	void set_first_name(const std::string& first_name)
-	{
-		this->first_name = first_name;
 	}
 	void set_age(unsigned int age)
 	{
@@ -48,7 +50,7 @@ public:
 
 	void print()const
 	{
-		std::cout << last_name << "\t" << first_name << "\t" << age << std::endl;
+		std::cout << last_name << "\t" << first_name << "\t" << age <<( age >= 11 && age <= 14 ? " лет" : age % 10 == 1 ? " год" : age%10==2||age%10==4 ? " года" : " лет")<< std::endl;
 	}
 };
 
@@ -111,10 +113,56 @@ public:
 	void print()const
 	{
 		Human::print();
-		std::cout << spec << "\t" << group << ", успеваемость " << rating << "%, посещаемость " << attendence << "%\n" << std::endl;
+		std::cout << spec << "\t" << group << ", успеваемость " << rating << "%, посещаемость " << attendence << "%" << std::endl;
 	}
 };
 
+class Graduate : public Student
+{
+	std::string tesis;
+	unsigned int plagiatory;
+
+private:
+	void set_tesis(const std::string& tesis)
+	{
+		this->tesis = tesis;
+	}
+public:
+	const std::string& get_tesis()const
+	{
+		return tesis;
+	}
+	const unsigned int get_plagiatory()const
+	{
+		return plagiatory;
+	}
+	void set_plagiatory(unsigned int plagiatory)
+	{
+		this->plagiatory = plagiatory <= 100 ? plagiatory : 100;
+	}
+
+	//		Constructors:
+	Graduate(
+		const std::string& last_name, const std::string& first_name, unsigned int age,
+		const std::string& spec, const std::string& group, unsigned int rating, unsigned int attendence,
+		const std::string& tesis, unsigned int plagiatory
+	) : Student(last_name, first_name, age, spec, group, rating, attendence)
+	{
+		set_tesis(tesis);
+		set_plagiatory(plagiatory);
+		std::cout << "GConstructor:\t" << this << std::endl;
+	}
+	~Graduate()
+	{
+		std::cout << "GDestructor:\t" << this << std::endl;
+	}
+
+	void print()
+	{
+		Student::print();
+		std::cout <<"Тема диплома: "<< tesis << ",\tпроцет плагиата: " << plagiatory << "%" << std::endl;
+	}
+};
 
 class Teacher : public Human
 {
@@ -178,4 +226,5 @@ void main()
 	Student stud("Тупенко", "Васыль", 18, "Дизайн", "СТ ДВ 37");
 	stud.print();
 	Teacher ("Умненко", "Петро", 65, "Дизайн", 5, 1000000).print();
+	Graduate ("Тупенко", "Васыль", 11, "Дизайн", "СТ ДВ 37",34,0, "Дизайн туалетов", 0).print();
 }
