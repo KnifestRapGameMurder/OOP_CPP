@@ -50,7 +50,7 @@ public:
 
 	void print()const
 	{
-		std::cout << last_name << "\t" << first_name << "\t" << age <<( age >= 11 && age <= 14 ? " лет" : age % 10 == 1 ? " год" : age%10==2||age%10==4 ? " года" : " лет")<< std::endl;
+		std::cout <<"\n"<< last_name << "\t" << first_name << "\t" << age <<( age >= 11 && age <= 14 ? " лет" : age % 10 == 1 ? " год" : age%10==2||age%10==4 ? " года" : " лет")<< std::endl;
 	}
 };
 
@@ -102,7 +102,8 @@ public:
 	{
 		set_specialty(spec);
 		set_group(group);
-		this->rating = this->attendence = 0;
+		this->rating = rating;
+		this->attendence = attendence;
 		std::cout << "SConstructor:\t" <<this<< std::endl;
 	}
 	~Student()
@@ -120,6 +121,7 @@ public:
 class Graduate : public Student
 {
 	std::string tesis;
+	std::string curator;
 	unsigned int plagiatory;
 
 private:
@@ -127,10 +129,18 @@ private:
 	{
 		this->tesis = tesis;
 	}
+	void set_curator(const std::string& curator)
+	{
+		this->curator = curator;
+	}
 public:
 	const std::string& get_tesis()const
 	{
 		return tesis;
+	}
+	const std::string& get_curator()const
+	{
+		return curator;
 	}
 	const unsigned int get_plagiatory()const
 	{
@@ -145,10 +155,11 @@ public:
 	Graduate(
 		const std::string& last_name, const std::string& first_name, unsigned int age,
 		const std::string& spec, const std::string& group, unsigned int rating, unsigned int attendence,
-		const std::string& tesis, unsigned int plagiatory
+		const std::string& tesis, const std::string& curator, unsigned int plagiatory
 	) : Student(last_name, first_name, age, spec, group, rating, attendence)
 	{
 		set_tesis(tesis);
+		set_curator(curator);
 		set_plagiatory(plagiatory);
 		std::cout << "GConstructor:\t" << this << std::endl;
 	}
@@ -160,7 +171,7 @@ public:
 	void print()
 	{
 		Student::print();
-		std::cout <<"Тема диплома: "<< tesis << ",\tпроцет плагиата: " << plagiatory << "%" << std::endl;
+		std::cout <<"Тема диплома: "<< tesis << ",\tимя куратора: "<< curator << ",\tпроцет плагиата: " << plagiatory << "%\n" << std::endl;
 	}
 };
 
@@ -226,5 +237,5 @@ void main()
 	Student stud("Тупенко", "Васыль", 18, "Дизайн", "СТ ДВ 37");
 	stud.print();
 	Teacher ("Умненко", "Петро", 65, "Дизайн", 5, 1000000).print();
-	Graduate ("Тупенко", "Васыль", 11, "Дизайн", "СТ ДВ 37",34,0, "Дизайн туалетов", 0).print();
+	Graduate ("Тупенко", "Васыль", 11, "Дизайн", "СТ ДВ 37",34,0, "Дизайн туалетов","Дьявол", 0).print();
 }
