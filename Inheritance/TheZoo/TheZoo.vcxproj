@@ -23,7 +23,7 @@
     <ProjectGuid>{93E6EB74-A662-4697-9A7E-03D479B028CD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>TheZoo</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

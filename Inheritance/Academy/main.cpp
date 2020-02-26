@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<regex>
 
 class Human
 {
@@ -9,7 +10,7 @@ class Human
 private:
 	void set_last_name(const std::string& last_name)
 	{
-
+		//std::regex exp ("\\w");
 		this->last_name = last_name;
 	}
 	void set_first_name(const std::string& first_name)
@@ -43,14 +44,20 @@ public:
 		set_age(age);
 		std::cout << "HConstructor:\t" << this << std::endl;
 	}
-	~Human()
+	virtual ~Human()
 	{
 		std::cout << "HDestructor:\t" << this << std::endl;
 	}
 
-	void print()const
+	virtual void print()
 	{
-		std::cout <<"\n"<< last_name << "\t" << first_name << "\t" << age <<( age >= 11 && age <= 14 ? " лет" : age % 10 == 1 ? " год" : age%10==2||age%10==4 ? " года" : " лет")<< std::endl;
+		/*std::cout <<"\n"<< last_name << "\t" << first_name << "\t" << age <<( age >= 11 && age <= 14 ? " лет" : age % 10 == 1 ? " год" : age%10==2||age%10==4 ? " года" : " лет")<< std::endl;*/
+		std::cout.width(8);
+		std::cout << last_name << "\t";
+		std::cout.width(8);
+		std::cout << first_name << "\t";
+		std::cout.width(8);
+		std::cout << age << std::endl;
 	}
 };
 
@@ -111,10 +118,17 @@ public:
 		std::cout << "SDestructor:\t" << this << std::endl;
 	}
 
-	void print()const
+	void print()
 	{
 		Human::print();
-		std::cout << spec << "\t" << group << ", успеваемость " << rating << "%, посещаемость " << attendence << "%" << std::endl;
+		std::cout.width(10);
+		std::cout << spec << "\t";
+		std::cout.width(10);
+		std::cout << group << "\t";
+		std::cout.width(10);
+		std::cout << ", успеваемость " << rating << "%\t";
+		std::cout.width(10);
+		std::cout << "посещаемость " << attendence << "%" << std::endl;
 	}
 };
 
@@ -229,23 +243,40 @@ public:
 	}
 };
 
+//#define POLYMORPHISM
+
 void main()
 {
 	setlocale(LC_ALL, "");
-	/*Human human("Тупенко", "Васыль", 18);
-	human.print();
+	/*setlocale(LC_ALL, "");
+	Human human("Тупенко", "Васыль", 18);
 	Student stud("Тупенко", "Васыль", 18, "Дизайн", "СТ ДВ 37");
 	stud.print();
 	Teacher ("Умненко", "Петро", 65, "Дизайн", 5, 1000000).print();
 	Graduate ("Тупенко", "Васыль", 11, "Дизайн", "СТ ДВ 37",34,0, "Дизайн туалетов","Дьявол", 0).print();*/
 
+#ifdef POLYMORPHISM
 	Human* Group[] =
 	{
-		new Teacher("Умненко", "Петро", 65, "Дизайн", 5, 1000000),
-		new Student("Тупенко", "Васыль", 18, "Дизайн", "СТ ДВ 37")
+		new Teacher("Ковтун", "Олег", 35, "C++", 5, 32),
+		new Student("Ковальчук", "Антон", 15, "РПО", "СТ ПВ 35",95,100),
+		new Student("Кравцов", "Артем", 15, "РПО", "СТ ПВ 35",85,97),
+		new Student("Горбенко", "Богдан", 16, "РПО", "СТ ПВ 35",99,100),
+		new Graduate("Горбенко", "Богдан", 16, "РПО", "СТ ПВ 35",99,100,"Обучение нейронных сетей","ОА",0)
 	};
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < sizeof(Group) / sizeof(Human*); i++)
 	{
 		Group[i]->print();
+		std::cout << "------------------------------------------------------------------------------------------\n";
 	}
+	for (int i = 0; i < sizeof(Group) / sizeof(Human*); i++)
+	{
+		delete Group[i];
+	}
+#endif // POLYMORPHISM
+
+	std::string name;
+	std::cout << "Input name: "; std::cin >> name;
+	std::regex rgx("[A-Z][a-z]{1,20}");
+	std::cout << std::regex_match(name, rgx, std::regex_constants::match_default) << std::endl;
 }
