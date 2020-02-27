@@ -10,12 +10,15 @@ class Human
 private:
 	void set_last_name(const std::string& last_name)
 	{
-		//std::regex exp ("\\w");
-		this->last_name = last_name;
+		std::regex rgx_last_name_ru("[А-Я][а-я]{1,20}");
+		std::regex rgx_last_name_en("[A-Z][a-z]{1,20}");
+		this->last_name = ((std::regex_match(last_name, rgx_last_name_ru, std::regex_constants::match_default)) || (std::regex_match(last_name, rgx_last_name_en, std::regex_constants::match_default)) ? last_name : "Неизвестный формат");
 	}
 	void set_first_name(const std::string& first_name)
 	{
-		this->first_name = first_name;
+		std::regex rgx_first_name_ru("[А-Я][а-я]{1,20}");
+		std::regex rgx_first_name_en("[A-Z][a-z]{1,20}");
+		this->first_name = ((std::regex_match(first_name, rgx_first_name_ru, std::regex_constants::match_default)) || (std::regex_match(last_name, rgx_first_name_en, std::regex_constants::match_default)) ? first_name : "Неизвестный формат");
 	}
 public:
 	const std::string& get_last_name()const
