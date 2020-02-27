@@ -303,4 +303,9 @@ void main()
 	std::cout << group << std::endl;
 #endif // SYNTAX_GROUP
 
+	std::regex rgx_email("[a-z]");
+	std::string email;
+	std::cout << "Input email: ";
+	std::cin >> email;
+	std::cout << std::regex_match(email, rgx_email, std::regex_constants::match_default) << std::endl;
 }
