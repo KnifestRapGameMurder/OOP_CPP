@@ -91,7 +91,9 @@ public:
 	}
 	void set_group(const std::string& group)
 	{
-		this->group= group;
+		std::regex rgx_group("[А-Я]{2}\\s[А-Я]{2,3}\\s[0-9]{2}");
+		std::regex_match(group, rgx_group, std::regex_constants::match_default);
+		this->group=(std::regex_match(group, rgx_group, std::regex_constants::match_default) ? group: "Неизвестный формат");
 	}
 	void set_rating(unsigned int rating)
 	{
@@ -243,7 +245,8 @@ public:
 	}
 };
 
-//#define POLYMORPHISM
+#define POLYMORPHISM
+//#define REGEX
 
 void main()
 {
@@ -275,8 +278,11 @@ void main()
 	}
 #endif // POLYMORPHISM
 
+#ifdef REGEX
 	std::string name;
 	std::cout << "Input name: "; std::cin >> name;
 	std::regex rgx("[A-Z][a-z]{1,20}");
 	std::cout << std::regex_match(name, rgx, std::regex_constants::match_default) << std::endl;
+#endif // REGEX
+
 }
