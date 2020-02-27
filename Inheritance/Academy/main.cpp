@@ -115,6 +115,12 @@ public:
 	}
 };
 
+class Graduate : public Student
+{
+	std::string tesis;
+
+};
+
 
 class Teacher : public Human
 {
