@@ -91,9 +91,9 @@ public:
 	}
 	void set_group(const std::string& group)
 	{
-		std::regex rgx_group("[А-Я]{2}\\s[А-Я]{2,3}\\s[0-9]{2}");
-		std::regex_match(group, rgx_group, std::regex_constants::match_default);
-		this->group=(std::regex_match(group, rgx_group, std::regex_constants::match_default) ? group: "Неизвестный формат");
+		std::regex rgx_group_ru("[А-Я]{2}\\s[А-Я]{2,3}\\s[0-9]{2}");
+		std::regex rgx_group_en("[A-Z]{2}\\s[A-Z]{2,3}\\s[0-9]{2}");
+		this->group=((std::regex_match(group, rgx_group_ru, std::regex_constants::match_default)) || (std::regex_match(group, rgx_group_en, std::regex_constants::match_default)) ? group: "Неизвестный формат");
 	}
 	void set_rating(unsigned int rating)
 	{
