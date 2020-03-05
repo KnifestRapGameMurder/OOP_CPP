@@ -51,6 +51,10 @@ public:
 		Element* New = new Element(Data);
 		Temp->pNext = New;
 	}
+	void pop_back()
+	{
+		
+	}
 
 	//				Methods
 	void print()const
