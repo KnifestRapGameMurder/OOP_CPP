@@ -245,7 +245,7 @@ void main()
 	
 #endif // CONSTR_CHECK_2
 
-	ForwardList list = { 3,5,8,13,21 };
+	ForwardList list = {3,5,8,13,21};
 	for (int i = 0; i < list.get_size(); i++)
 	{
 		std::cout << list[i] << "\t";
