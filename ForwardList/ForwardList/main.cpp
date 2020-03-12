@@ -7,7 +7,8 @@ class Element {
 	Element* pNext;		//
 	static int count;
 public:
-	
+	const int get_data()const { return Data;}
+	const Element* get_pnext()const { return pNext;}
 	Element(int Data, Element* pNext = nullptr) :Data(Data), pNext(pNext)
 	{
 		count++;
@@ -19,9 +20,27 @@ public:
 		std::cout << "EDestructor:\t" << this << std::endl;
 	}
 	friend class ForwardList;
+	friend class Iterator;
 };
 
 int Element::count = 0;
+
+class Iterator
+{
+	Element* Temp;
+public:
+	Iterator(Element* Temp)
+	{
+		this->Temp = Temp;
+	}
+	~Iterator(){}
+
+	Iterator& operator++()
+	{
+		Temp = Temp->pNext;
+		return *this;
+	}
+};
 
 class ForwardList
 {
@@ -56,14 +75,23 @@ public:
 	}
 	ForwardList(const ForwardList& other) :ForwardList()
 	{
-		Element* Temp = other.Head->pNext;
-		push_front(0);
-		for (int i = 0; i < other.Size-1; i++)
+		/*Element* Temp = other.Head;
+		for (int i = 0; i < other.Size; i++)
 		{
-			push_back(0);
-			Head->pNext->Data = Temp->Data;
-		}
+			push_back(Temp->Data);
+			Temp = Temp->pNext;
+		}*/
+		//for (Element* Temp = other.Head; Temp!=nullptr; Temp = Temp->pNext)		
+		for (Iterator Temp = other.Head; Temp!=nullptr; Temp++)		
+			push_back(*Temp);
 		std::cout << "LCopyConstructor:\t" << this << std::endl;
+	}
+	ForwardList(ForwardList&& other)
+	{
+		this->Head = other.Head;
+		this->Size = other.Size;
+		other.Head = nullptr;
+		std::cout << "LMoveConstructor:\t" << this << std::endl;
 	}
 	~ForwardList()
 	{
@@ -172,6 +200,34 @@ public:
 		std::cout << "List size: " << Size << " elements.\n";
 	}
 
+	ForwardList& operator=(const ForwardList& other)
+	{
+		if (this == &other) return *this;
+		while (Head)pop_front();
+		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)	push_back(Temp->Data);
+		std::cout << "LCopyAssignment:\t" << this << std::endl;
+		return *this;
+	}
+	ForwardList& operator=(ForwardList&& other)
+	{
+		this->Head = other.Head;
+		this->Size = other.Size;
+		other.Head = nullptr;
+		std::cout << "LMoveAssignment:\t" << this << std::endl;
+		return *this;
+	}
+	ForwardList operator+(const ForwardList& other)
+	{
+		ForwardList buffer = *this;
+		for (Element* Temp = other.Head; Temp != nullptr; Temp++)	buffer.push_back(Temp->Data);
+		return buffer;
+	}
+	ForwardList& operator+=(const ForwardList other)
+	{
+		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)	this->push_back(Temp->Data);
+		return *this;
+	}
+	
 	int& operator[](int index)
 	{
 		Element* Temp = Head;
@@ -180,9 +236,14 @@ public:
 	}
 };
 
+
+
 //#define FIRST_LESSON
 //#define CONSTR_CHECK_1
-#define CONSTR_CHECK_2
+//#define CONSTR_CHECK_2
+//#define COPY_CONSTRUCTOR
+//#define COPY_ASSIGNMENT
+#define OPERATOR_PLUS
 
 void main()
 {
@@ -242,13 +303,61 @@ void main()
 #endif // FIRST_LESSON
 
 #ifdef CONSTR_CHECK_2
-	
-#endif // CONSTR_CHECK_2
-
-	ForwardList list = {3,5,8,13,21};
+	ForwardList list = { 3,5,8,13,21 };
 	for (int i = 0; i < list.get_size(); i++)
 	{
 		std::cout << list[i] << "\t";
 	}
 	std::cout << std::endl;
+#endif // CONSTR_CHECK_2
+
+#ifdef COPY_CONSTRUCTOR
+	ForwardList fl;
+	fl.push_back(3);
+	fl.push_back(5);
+	fl.push_back(8);
+	fl.push_back(13);
+	fl.print();
+	DELIMITER
+		ForwardList fl2 = fl;
+	fl2.print();
+#endif // COPY_CONSTRUCTOR
+
+#ifdef COPY_ASSIGNMENT
+	ForwardList fl;
+	fl.push_back(3);
+	fl.push_back(5);
+	fl.push_back(8);
+	fl.push_back(13);
+	fl.print();
+	DELIMITER
+	ForwardList fl2;
+	fl2.push_back(1);
+	fl2.push_back(2);
+	fl2.push_back(3);
+	fl2.print();
+	DELIMITER
+	fl2 = fl2;
+	fl2.print();
+#endif // COPY_ASSIGNMENT
+
+#ifdef OPERATOR_PLUS
+	ForwardList fl;
+	fl.push_back(3);
+	fl.push_back(5);
+	fl.push_back(8);
+	fl.push_back(13);
+	fl.print();
+	DELIMITER
+		ForwardList fl2;
+	fl2.push_back(1);
+	fl2.push_back(2);
+	fl2.push_back(3);
+	fl2.print();
+	DELIMITER
+	ForwardList fl3;
+	fl3 = fl + fl2;
+	fl3.print();
+#endif // OPERATOR+
+
 }
