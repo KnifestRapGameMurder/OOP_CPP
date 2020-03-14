@@ -27,8 +27,10 @@ int Element::count = 0;
 
 class Iterator
 {
-	Element* Temp;
+	
 public:
+	Element* Temp;
+
 	Iterator(Element* Temp)
 	{
 		this->Temp = Temp;
@@ -40,7 +42,17 @@ public:
 		Temp = Temp->pNext;
 		return *this;
 	}
+
+	bool operator!=(Element* other)
+	{
+		return (Temp != other);
+	}
+	int operator*()
+	{	
+		return Temp->Data;
+	}
 };
+
 
 class ForwardList
 {
@@ -51,6 +63,7 @@ public:
 	{
 		return Size;
 	}
+
 	ForwardList()
 	{
 		Head = nullptr;//≈сли список пуст , то его голова указывает на 0
@@ -82,7 +95,7 @@ public:
 			Temp = Temp->pNext;
 		}*/
 		//for (Element* Temp = other.Head; Temp!=nullptr; Temp = Temp->pNext)		
-		for (Iterator Temp = other.Head; Temp!=nullptr; Temp++)		
+		for (Iterator Temp = other.Head; Temp!=nullptr; /*Temp.Temp = Temp.Temp->pNext*/ Temp++)		
 			push_back(*Temp);
 		std::cout << "LCopyConstructor:\t" << this << std::endl;
 	}
@@ -98,6 +111,7 @@ public:
 		while (Head)pop_front();
 		std::cout << "LDestructor:\t" << this << std::endl;
 	}
+
 	//				Add elem
 	void push_front(int Data)
 	{
@@ -219,7 +233,7 @@ public:
 	ForwardList operator+(const ForwardList& other)
 	{
 		ForwardList buffer = *this;
-		for (Element* Temp = other.Head; Temp != nullptr; Temp++)	buffer.push_back(Temp->Data);
+		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)	buffer.push_back(Temp->Data);
 		return buffer;
 	}
 	ForwardList& operator+=(const ForwardList other)
@@ -227,7 +241,6 @@ public:
 		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)	this->push_back(Temp->Data);
 		return *this;
 	}
-	
 	int& operator[](int index)
 	{
 		Element* Temp = Head;
@@ -355,7 +368,7 @@ void main()
 	fl2.push_back(3);
 	fl2.print();
 	DELIMITER
-	ForwardList fl3;
+	ForwardList fl3 = fl2 + fl;
 	fl3 = fl + fl2;
 	fl3.print();
 #endif // OPERATOR+
