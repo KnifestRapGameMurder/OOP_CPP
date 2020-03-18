@@ -42,8 +42,18 @@ public:
 		Temp = Temp->pNext;
 		return *this;
 	}
+	Iterator& operator++(int)
+	{
+		Iterator old = *this;
+		Temp = Temp->pNext;
+		return old;
+	}
 
-	bool operator!=(Element* other)
+	bool operator==(const Element* other)const
+	{
+		return (Temp == other);
+	}
+	bool operator!=(const Element* other)const
 	{
 		return (Temp != other);
 	}
@@ -62,6 +72,14 @@ public:
 	unsigned int get_size()
 	{
 		return Size;
+	}
+	const Element* getHead()const
+	{
+		return Head;
+	}
+	Element* getHead()
+	{
+		return Head;
 	}
 
 	ForwardList()
@@ -95,7 +113,7 @@ public:
 			Temp = Temp->pNext;
 		}*/
 		//for (Element* Temp = other.Head; Temp!=nullptr; Temp = Temp->pNext)		
-		for (Iterator Temp = other.Head; Temp!=nullptr; /*Temp.Temp = Temp.Temp->pNext*/ Temp++)		
+		for (Iterator Temp = other.Head; Temp!=nullptr; Temp++)		
 			push_back(*Temp);
 		std::cout << "LCopyConstructor:\t" << this << std::endl;
 	}
@@ -256,7 +274,8 @@ public:
 //#define CONSTR_CHECK_2
 //#define COPY_CONSTRUCTOR
 //#define COPY_ASSIGNMENT
-#define OPERATOR_PLUS
+//#define OPERATOR_PLUS
+#define ITERATOR
 
 void main()
 {
@@ -372,5 +391,9 @@ void main()
 	fl3 = fl + fl2;
 	fl3.print();
 #endif // OPERATOR+
+
+
+#ifdef ITERATOR
+#endif // ITERATOR
 
 }
