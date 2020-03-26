@@ -10,7 +10,7 @@ class List
 		Element* pNext;
 		Element* pPrev;
 	public:
-		Element(int data, Element* pNext, Element* pPrev);
+		Element(int data, Element* pNext = nullptr, Element* pPrev = nullptr);
 		~Element();
 		friend class List;
 	};
@@ -309,7 +309,7 @@ List operator+(const List& left, const List& right)
 	return buf;
 }
 
-List::Element::Element(int data, Element* pNext = nullptr, Element* pPrev = nullptr) : data(data), pNext(pNext), pPrev(pPrev)
+List::Element::Element(int data, Element* pNext, Element* pPrev) : data(data), pNext(pNext), pPrev(pPrev)
 {
 	std::cout << "EConstructor:\t" << this << std::endl;
 }
