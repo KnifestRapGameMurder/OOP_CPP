@@ -33,6 +33,19 @@ public:
 		int& operator*();
 		const int& operator*()const;
 	};
+	class ReverseIterator
+	{
+		Element* temp;
+	public:
+		ReverseIterator(Element* temp);
+		~ReverseIterator();
+		ReverseIterator& operator++();
+		ReverseIterator& operator++(int);
+		bool operator==(const ReverseIterator& other)const;
+		bool operator!=(const ReverseIterator& other)const;
+		int& operator*();
+		const int& operator*()const;
+	};
 	List();
 	List(const std::initializer_list<int>& il);
 	List(const List& other);
@@ -53,8 +66,12 @@ public:
 	List& operator=(List&& other);
 	Iterator begin();
 	Iterator end();
+	ReverseIterator rbegin();
+	ReverseIterator rend();
 	const Iterator begin()const;
 	const Iterator end()const;
+	const ReverseIterator rbegin()const;
+	const ReverseIterator rend()const;
 };
 
 List operator+(const List& left, const List& right);

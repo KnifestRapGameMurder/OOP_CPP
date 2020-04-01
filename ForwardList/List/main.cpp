@@ -50,7 +50,7 @@ void main() {
 
 #ifdef RANGE-BASED_FOR
 	List list = { 3,5,8,13,21 };
-	for (int i : list)
+	for (List::ReverseIterator i = list.rbegin();i!=list.rend();i++ )
 	{
 		std::cout << i << "\t";
 	}
@@ -63,12 +63,19 @@ void main() {
 	l3.print();
 	l3.printReverse();*/
 
-	List l1 = { 1,1,2,3,5 };
+	/*List l1 = { 1,1,2,3,5 };
 	List l2 = { 8,13,21,34,55 };
 	List l3;
 	l3 = l1 + l2;
 	l3.print();
-	l3.printReverse();
-
+	l3.printReverse();*/
+	 
+	List list = {3,5,8,13};
+	
+	for (List::ReverseIterator rit = list.rbegin(); rit != list.rend(); rit++)
+	{
+		std::cout << *rit << "\t";
+	}
+	std::cout << std::endl;
 }
 

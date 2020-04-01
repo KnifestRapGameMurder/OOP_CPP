@@ -190,6 +190,7 @@ List& List::operator=(List&& other)
 	std::cout << "LMoveAssignment:\t" << this << std::endl;
 	return *this;
 }
+
 List::Iterator List::begin()
 {
 	return this->head;
@@ -206,6 +207,24 @@ const List::Iterator List::end()const
 {
 	return (Iterator)nullptr;
 }
+
+List::ReverseIterator List::rbegin()
+{
+	return this->tail;
+}
+List::ReverseIterator List::rend()
+{
+	return (ReverseIterator)nullptr;
+}
+const List::ReverseIterator List::rbegin()const
+{
+	return this->tail;
+}
+const List::ReverseIterator List::rend()const
+{
+	return (ReverseIterator)nullptr;
+}
+
 List operator+(const List& left, const List& right)
 {
 	List buf = left;
@@ -261,4 +280,42 @@ const int& List::Iterator::operator*()const
 	return temp->data;
 }
 //		ITERATOR	end		/////////////////////////////////////////////
+//		REVERSEITERATOR	begin	/////////////////////////////////////////
+List::ReverseIterator::ReverseIterator(Element* temp)
+{
+	this->temp = temp;
+	std::cout << "RitConstructor:\t" << this << std::endl;
+}
+List::ReverseIterator::~ReverseIterator()
+{
+	std::cout << "RitDestructor:\t" << this << std::endl;
+}
+List::ReverseIterator& List::ReverseIterator::operator++()
+{
+	temp = temp->pPrev;
+	return *this;
+}
+List::ReverseIterator& List::ReverseIterator::operator++(int)
+{
+	ReverseIterator old = *this;	//CopyConstructor 
+	temp = temp->pPrev;
+	return old;
+}
+bool List::ReverseIterator::operator==(const ReverseIterator& other)const
+{
+	return (*this == other);
+}
+bool List::ReverseIterator::operator!=(const ReverseIterator& other)const
+{
+	return (temp != other.temp);
+}
+int& List::ReverseIterator::operator*()
+{
+	return temp->data;
+}
+const int& List::ReverseIterator::operator*()const
+{
+	return temp->data;
+}
+//		REVERSEITERATOR	end		/////////////////////////////////////////
 //		LIST	end	//////////////////////////////////////////////////////////////////////////////////////
