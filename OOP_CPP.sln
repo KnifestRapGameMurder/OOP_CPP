@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OOP_CPP", "OOP_CPP\OOP_CPP.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "String", "String\String.vcxproj", "{40EEFBAA-9713-4DAE-B585-B461BA49690E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BInaryTree", "BInaryTree\BInaryTree.vcxproj", "{16DB1E07-21E0-41DF-8435-2AC4EA9CCB74}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{40EEFBAA-9713-4DAE-B585-B461BA49690E}.Release|x64.Build.0 = Release|x64
 		{40EEFBAA-9713-4DAE-B585-B461BA49690E}.Release|x86.ActiveCfg = Release|Win32
 		{40EEFBAA-9713-4DAE-B585-B461BA49690E}.Release|x86.Build.0 = Release|Win32
+		{16DB1E07-21E0-41DF-8435-2AC4EA9CCB74}.Debug|x64.ActiveCfg = Debug|x64
+		{16DB1E07-21E0-41DF-8435-2AC4EA9CCB74}.Debug|x64.Build.0 = Debug|x64
+		{16DB1E07-21E0-41DF-8435-2AC4EA9CCB74}.Debug|x86.ActiveCfg = Debug|Win32
+		{16DB1E07-21E0-41DF-8435-2AC4EA9CCB74}.Debug|x86.Build.0 = Debug|Win32
+		{16DB1E07-21E0-41DF-8435-2AC4EA9CCB74}.Release|x64.ActiveCfg = Release|x64
+		{16DB1E07-21E0-41DF-8435-2AC4EA9CCB74}.Release|x64.Build.0 = Release|x64
+		{16DB1E07-21E0-41DF-8435-2AC4EA9CCB74}.Release|x86.ActiveCfg = Release|Win32
+		{16DB1E07-21E0-41DF-8435-2AC4EA9CCB74}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
