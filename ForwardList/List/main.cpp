@@ -378,6 +378,8 @@ List<T> operator+(const List<T>& left, const List<T>& right)
 //#define BASE_CHECK
 //#define CONSTRUCTORS_CHECK
 //#define OPERATOR+CHECK
+//#define OPERATOR_PLUS_DOUBLE
+#define OPERATOR_PLUS_STRING
 
 void main()
 {
@@ -467,35 +469,41 @@ void main()
 	std::cout << std::endl;
 #endif // OPERATOR+CHECK
 
-	/*List<double> list1 = { 1,1,2,3,5,8 };
-	for (List<double>::Iterator it = list1.begin(); it != list1.end(); it++)
-	{
-		std::cout << *it << "\t";
-	}
-	std::cout << std::endl;
+#ifdef OPERATOR_PLUS_DOUBLE
+	List<double> list1 = { 1,1,2,3,5,8 };
+for (List<double>::Iterator it = list1.begin(); it != list1.end(); it++)
+{
+	std::cout << *it << "\t";
+}
+std::cout << std::endl;
 
-	List<double> list2 = { 34.4,55.6,89.32 };
-	for (int i : list2)
-		std::cout << i << "\t";
-	std::cout << std::endl;
+List<double> list2 = { 34.4,55.6,89.32 };
+for (int i : list2)
+	std::cout << i << "\t";
+std::cout << std::endl;
 
-	List<double> list3 = list1 + list2;
-	list3.print();*/
+List<double> list3 = list1 + list2;
+list3.print();
+#endif // OPERATOR+_INT
 
-	List<std::string> list1 = { "One","Two","Three" };
-	for (List<std::string>::Iterator it = list1.begin(); it != list1.end(); it++)
-	{
-		std::cout << *it << "\t";
-	}
-	std::cout << std::endl;
 
-	List<std::string> list2 = { "Four","Five","Six" };
-	for (std::string i : list2)
-		std::cout << i << "\t";
-	std::cout << std::endl;
+#ifdef OPERATOR_PLUS_STRING
+List<std::string> list1 = { "One","Two","Three" };
+for (List<std::string>::Iterator it = list1.begin(); it != list1.end(); it++)
+{
+	std::cout << *it << "\t";
+}
+std::cout << std::endl;
 
-	List<std::string> list3 = list1 + list2;
-	list3.print();
+List<std::string> list2 = { "Four","Five","Six" };
+for (std::string i : list2)
+std::cout << i << "\t";
+std::cout << std::endl;
+
+List<std::string> list3 = list1 + list2;
+list3.print();
+#endif // OPERATOR_PLUS_STRING
+
 
 	/*List<double> list2 = { 1.34,1.34,2.54,3.2,5.7,8.2 };
 	for (List<double>::Iterator it = list2.begin(); it != list2.end(); it++)
