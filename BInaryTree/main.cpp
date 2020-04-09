@@ -20,6 +20,13 @@ class BTree
 		friend class BTree;
 	}*root;
 private:
+	void copy(Element*& left,Element* right)
+	{
+		if (right == nullptr)return;
+		left = new Element(right->data);
+		copy(left->pLeft, right->pLeft);
+		copy(left->pRight, right->pRight);
+	}
 	void insert(int data, Element* root)
 	{
 		if (this->root == nullptr)//Если дерево пустое, то добавляем элемент прямо в корень.
@@ -85,6 +92,7 @@ private:
 		std::cout << root->data << "\t";
 		print(root->pRight);
 	}
+	
 public:
 	Element* getRoot()
 	{
@@ -93,6 +101,26 @@ public:
 	BTree() :root(nullptr)
 	{
 		std::cout << "TConstructor:\t" << this << std::endl;
+	}
+	BTree(std::initializer_list<int> il) :BTree()
+	{
+		for (int i : il)
+		{
+			insert(i);
+		}
+	}
+	BTree(const BTree& other) :BTree()
+	{
+		copy(this->root, other.root);
+		std::cout << "BTcopyConstructor:\t" << this << std::endl;
+	}
+	BTree operator=(const BTree& other)
+	{
+		if (&other == this)return *this;
+		this->clear();
+		this->copy(this->root, other.root);
+		std::cout << "BTcopyAssignment:\t" << this << std::endl;
+		return *this;
 	}
 	~BTree()
 	{
@@ -147,6 +175,12 @@ public:
 		maxValue(root->pRight);
 
 	}
+	int maxValue(const Element* root)const
+	{
+		if (root->pRight == nullptr)return root->data;
+		maxValue(root->pRight);
+
+	}
 
 	int size()const
 	{
@@ -170,7 +204,7 @@ public:
 	
 };
 
-#define BASE_CHECK
+//#define BASE_CHECK
 
 void main() 
 {
@@ -192,6 +226,12 @@ void main()
 	T800.erase(v);
 	T800.print();
 #endif // BASE_CHECK
+
+	BTree bint = { 3,5,8,13 };
+	//bint.print();
+	BTree bint2 = bint;
+	bint2.print();
+
 
 	/*BTree doob;
 	doob.insert(50);
