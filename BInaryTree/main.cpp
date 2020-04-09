@@ -86,6 +86,41 @@ private:
 		print(root->pRight);
 	}
 public:
+
+	class Iterator
+	{
+		Element* prevRoot;
+		Element* root;
+	public:
+		Iterator(Element* root) :root(root)
+		{
+			prevRoot = nullptr;
+		}
+		~Iterator(){}
+		const int& operator*()const
+		{
+			return root->data;
+		}
+		int& operator*()
+		{
+			return root->data;
+		}
+
+		bool operator==(const Iterator& other)
+		{
+			return this->root == other.root;
+		}
+		bool operator!=(const Iterator& other)
+		{
+			return this->root != other.root;
+		}
+
+		Iterator& operator++()
+		{
+			
+		}
+	};
+
 	Element* getRoot()
 	{
 		return this->root;
