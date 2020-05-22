@@ -22,11 +22,13 @@ void main()
 
 	Car car;
 	
-	car.set_trans_position('D');
+	/*car.set_trans_position('D');
 	car.set_PWR_mode();
 	car.turn_on_low_beam();
 	car.fill_tank(20);
-	car.start();
+	car.start();*/
+
+
 	//car.control_panel.idle_thread = new std::thread(&Car::control, car);
 
 	//char key = 0;

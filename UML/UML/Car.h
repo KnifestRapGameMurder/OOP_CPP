@@ -42,11 +42,16 @@ private:
 	void turn_on_tail_beam();
 	void turn_off_tail_beam();
 
+	bool driver_in = false;
+	bool need_to_feel_tank = false;
+	bool need_to_set_trans_p = false;
+
 	struct ControlPanel
 	{
 		std::thread* main_thread;
 		std::thread* panel_thread;
 		std::thread* idle_thread;	//холостой ход двигателя
+		std::thread* gas_thread;
 	}control_panel;
 public:
 	
@@ -65,6 +70,7 @@ public:
 	void unblock_trans();
 
 	void press_gas();
+	void run_engine();
 	void press_break();
 
 	void turn_on_left_ts();
@@ -89,4 +95,7 @@ public:
 	void show_info();
 	void idle();
 	void control();
+
+	void get_in();
+	void get_out();
 };
