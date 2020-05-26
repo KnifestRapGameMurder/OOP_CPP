@@ -31,6 +31,8 @@ private:
 	bool gas_pedal;
 	bool break_pedal;
 
+	double speed = 0;
+
 	Wheel front_right_wheel = FRONT_WHEEL;
 	Wheel front_left_wheel = FRONT_WHEEL;
 	Wheel rear_right_wheel;
@@ -52,6 +54,7 @@ private:
 		std::thread* panel_thread;
 		std::thread* idle_thread;	//холостой ход двигателя
 		std::thread* gas_thread;
+		std::thread* speed_thread;
 	}control_panel;
 public:
 	
@@ -95,6 +98,8 @@ public:
 	void show_info();
 	void idle();
 	void control();
+
+	void speed_change();
 
 	void get_in();
 	void get_out();

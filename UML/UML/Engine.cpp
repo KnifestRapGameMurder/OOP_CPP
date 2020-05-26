@@ -26,7 +26,7 @@ Engine::Engine(double consumption)
 	:started(false)
 {
 	this->consumption = consumption < 3 ? 3 : consumption>20 ? 20 : consumption;
-	this->consumption_per_s = this->consumption / 1000;
+	this->consumption_per_s = this->consumption / 100000;
 }
 
 Engine::Engine(double consumption,Tank& tank)
