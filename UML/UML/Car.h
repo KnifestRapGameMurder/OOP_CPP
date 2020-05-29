@@ -32,6 +32,7 @@ private:
 	bool break_pedal;
 
 	double speed = 0;
+	unsigned int max_speed;
 
 	Wheel front_right_wheel = FRONT_WHEEL;
 	Wheel front_left_wheel = FRONT_WHEEL;
@@ -54,7 +55,7 @@ private:
 		std::thread* panel_thread;
 		std::thread* idle_thread;	//холостой ход двигателя
 		std::thread* gas_thread;
-		std::thread* speed_thread;
+		std::thread* wheeling_thread = nullptr;
 	}control_panel;
 public:
 	
@@ -103,4 +104,7 @@ public:
 
 	void get_in();
 	void get_out();
+
+	void free_wheeling();
+	void change_consumption();
 };

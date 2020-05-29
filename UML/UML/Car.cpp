@@ -1,6 +1,6 @@
 ﻿#include "Car.h"
 #include<conio.h>
-
+using namespace std::chrono_literals;
 #include<iostream>
 
 void Car::turn_on_red_beam()
@@ -38,7 +38,7 @@ void Car::turn_off_tail_beam()
 
 
 Car::Car()
-	:engine(5, tank), tank(40), gas_pedal(false), break_pedal(false)
+	:engine(5, tank), tank(40), gas_pedal(false), break_pedal(false), max_speed(250)
 {
 	control_panel.main_thread = new std::thread(&Car::control, this);
 
@@ -74,6 +74,7 @@ void Car::start()
 void Car::off()
 {
 	engine.off();
+	change_consumption();
 	control_panel.idle_thread->join();
 	
 	turn_off_low_beam();
@@ -111,7 +112,8 @@ void Car::unblock_trans()
 
 void Car::press_gas()
 {
-	if (auto_trans.get_position() != 'P' && auto_trans.get_position() != 'N' && !gas_pedal) {
+	if (auto_trans.get_position() != 'P' && auto_trans.get_position() != 'N' 
+		&& !gas_pedal && engine.is_eng_started()) {
 		control_panel.gas_thread = new std::thread(&Car::run_engine, this);
 		gas_pedal = true;
 	}
@@ -122,9 +124,11 @@ void Car::run_engine() {
 		turn_off_red_beam();
 		engine.run();
 		speed += 10;
+		if (speed > max_speed)speed = max_speed;
+		change_consumption();
 	}
 	using namespace std::chrono_literals;
-	std::this_thread::sleep_for(10ms);
+	std::this_thread::sleep_for(1s);
 }
 
 
@@ -238,6 +242,7 @@ void Car::show_info()
 				<< "\tFuel level: " << tank.get_fuel_level() << std::endl;
 			if (gas_pedal) { std::cout << "runing" << std::endl; }
 			std::cout << "Transmission: " << auto_trans.get_position() << "\t\tSPORT MODE: " << (auto_trans.is_pwr_mode() ? "ON " : "OFF ") <<(tank.get_fuel_level()<5?"\t\tLOW FUEL":"")<< std::endl;
+			std::cout << "Consumption/s: " << engine.get_consumption_per_s() << std::endl;
 			std::cout << "Speed: "<<speed<<" ";
 			for (int i = 0; i < speed / 10; i++) {
 				std::cout << "|";
@@ -261,7 +266,7 @@ void Car::show_info()
 
 
 		using namespace std::chrono_literals;
-		std::this_thread::sleep_for(10ms);
+		std::this_thread::sleep_for(100ms);
 	}
 
 }
@@ -272,7 +277,7 @@ void Car::idle()
 		tank.give_fuel(engine.get_consumption_per_s())
 		)
 	{
-		
+		change_consumption();
 		using namespace std::chrono_literals;
 		std::this_thread::sleep_for(1s);
 	}
@@ -337,7 +342,15 @@ void Car::control()
 			gas_pedal = false;
 		}
 
-		using namespace std::chrono_literals;
+		if (speed > 0 && control_panel.wheeling_thread == nullptr)
+			control_panel.wheeling_thread = new std::thread(&Car::free_wheeling, this);
+		else if (speed == 0 && control_panel.wheeling_thread && control_panel.wheeling_thread->joinable())
+		{
+			control_panel.wheeling_thread->join();
+			control_panel.wheeling_thread = nullptr;
+		}
+
+		
 		std::this_thread::sleep_for(1ms);
 
 	} while (key != 27);
@@ -346,24 +359,44 @@ void Car::control()
 
 }
 
-void Car::speed_change() {
-	 if(!gas_pedal&&speed>0) {
-		speed -= 0.05;
+void Car::free_wheeling()
+{
+	//using namespace std::chrono_literals;
+	while (speed > 0)
+	{
+		speed--;
+		std::this_thread::sleep_for(1s);
 	}
-	using namespace std::chrono_literals;
-	std::this_thread::sleep_for(100ms);
 }
+
+void Car::change_consumption()
+{
+	if (speed > 0 && speed <= 60)
+		engine.set_consump_per_s(.002);
+	else if (speed > 60 && speed <= 100)
+		engine.set_consump_per_s(.0014);
+	else if (speed > 100 && speed <= 140)
+		engine.set_consump_per_s(.002);
+	else if (speed > 140 && speed <= 200)
+		engine.set_consump_per_s(.0025);
+	else if (speed > 200 && speed <= 1250)
+		engine.set_consump_per_s(.003);
+	else
+		engine.set_consump_per_s(engine.get_consumption()/10000);
+	
+	if (!engine.is_eng_started())
+		engine.set_consump_per_s(0);
+}
+
 
 void Car::get_in()
 {
 	driver_in = true;
 	control_panel.panel_thread = new std::thread(&Car::show_info, this);
-	control_panel.speed_thread = new std::thread(&Car::speed_change, this);
 }
 
 void Car::get_out()
 {
 	driver_in = false;
 	if (control_panel.panel_thread->joinable())control_panel.panel_thread->join();
-	if (control_panel.speed_thread->joinable())control_panel.speed_thread->join();
 }
