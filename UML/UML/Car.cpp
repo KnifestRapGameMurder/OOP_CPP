@@ -86,6 +86,7 @@ void Car::set_trans_position(char new_p)
 {
 	auto_trans.set_position(new_p);
 	if (new_p == 'R' || new_p == 'r') turn_on_red_beam();
+	else turn_off_red_beam();
 }
 
 void Car::set_PWR_mode()
@@ -123,7 +124,7 @@ void Car::run_engine() {
 	if (gas_pedal) {
 		turn_off_red_beam();
 		engine.run();
-		speed += 10;
+		speed += speed_incr;
 		if (speed > max_speed)speed = max_speed;
 		change_consumption();
 	}
@@ -237,16 +238,44 @@ void Car::show_info()
 	while (driver_in)
 	{
 		system("cls");
+		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 		if (driver_in) {
-			std::cout << "Engine status: " << (engine.is_eng_started() ? "started " : "switched off ")
-				<< "\tFuel level: " << tank.get_fuel_level() << std::endl;
+			std::cout << "Engine status: ";
+			if (engine.is_eng_started()) {
+				SetConsoleTextAttribute(hConsole, 2);
+				std::cout << "started ";
+			}
+			else {
+				SetConsoleTextAttribute(hConsole, 4);
+				std::cout <<"switched off " ;
+			}
+			SetConsoleTextAttribute(hConsole, 7);
+			std::cout << "\t\tFuel level: " << tank.get_fuel_level() << std::endl;
 			if (gas_pedal) { std::cout << "runing" << std::endl; }
-			std::cout << "Transmission: " << auto_trans.get_position() << "\t\tSPORT MODE: " << (auto_trans.is_pwr_mode() ? "ON " : "OFF ") <<(tank.get_fuel_level()<5?"\t\tLOW FUEL":"")<< std::endl;
-			std::cout << "Consumption/s: " << engine.get_consumption_per_s() << std::endl;
-			std::cout << "Speed: "<<speed<<" ";
+			if (break_pedal) { std::cout << "breaking" << std::endl; }
+			std::cout << "Transmission: " << auto_trans.get_position();
+			std::cout << "\t\tSPORT MODE: ";
+			if (auto_trans.is_pwr_mode()) {
+				SetConsoleTextAttribute(hConsole, 9);
+				std::cout << "ON" ;
+			}
+			else {
+				SetConsoleTextAttribute(hConsole, 8);
+				std::cout << "OFF" ;
+			}
+			SetConsoleTextAttribute(hConsole, 7);
+			if (tank.get_fuel_level() < 5) {
+				SetConsoleTextAttribute(hConsole, 12);
+				std::cout <<"\t\tLOW FUEL";
+				SetConsoleTextAttribute(hConsole, 7);
+			}
+			std::cout << "\nConsumption/s: " << engine.get_consumption_per_s() << std::endl;
+			std::cout <<"Speed increm: "<<speed_incr << "\t\tSpeed: "<<speed<<" ";
 			for (int i = 0; i < speed / 10; i++) {
 				std::cout << "|";
+				SetConsoleTextAttribute(hConsole, i>19?12:i>10?6:2 );
 			}
+			SetConsoleTextAttribute(hConsole, 7);
 			std::cout << "\n\n";
 
 			std::cout << "[1]\t-\t change transmission position" << std::endl;
@@ -260,7 +289,32 @@ void Car::show_info()
 				std::cout << "SELECT POSITION: ";
 				std::cin >> p;
 				set_trans_position(p);
+				switch (auto_trans.get_position()) {
+				case 'D':speed_incr = 10; break;
+				case 'R':speed_incr = 5; break;
+				case '2':
+				case 'L':speed_incr = 15; break;
+				case 'N':
+				case 'P':speed_incr = 0; break;
+				}
+				if (auto_trans.is_pwr_mode()) {
+					speed_incr *= 2;
+				}
 				need_to_set_trans_p = false;
+			}
+			if (need_to_set_trans_m) {
+				char m;
+				std::cout << "SELECT MODE: ";
+				std::cin >> m;
+				if (m == 'p' && !auto_trans.is_pwr_mode()) {
+					auto_trans.toggle_mode();
+					speed_incr *= 2;
+				}
+				else if (m == 'n' && auto_trans.is_pwr_mode()) {
+					auto_trans.toggle_mode();
+					speed_incr /= 2;
+				}
+				need_to_set_trans_m = false;
 			}
 		}
 
@@ -305,6 +359,7 @@ void Car::control()
 			}
 		}
 		key = _getch();
+		//std::cout << (int)key << std::endl;
 		switch (key)
 		{
 		case 'e':
@@ -328,10 +383,16 @@ void Car::control()
 		case 72:
 			press_gas();
 			break;
+		case 80:
+			break_pedal = true;
+			std::this_thread::sleep_for(500ms);
+			break;
 		case '1':
 			need_to_set_trans_p = true;
 			break;
 		case '2':
+			need_to_set_trans_m = true;
+			break;
 		default:
 			break;
 		}
@@ -350,6 +411,7 @@ void Car::control()
 			control_panel.wheeling_thread = nullptr;
 		}
 
+		if(break_pedal)break_pedal = false;
 		
 		std::this_thread::sleep_for(1ms);
 
@@ -364,7 +426,11 @@ void Car::free_wheeling()
 	//using namespace std::chrono_literals;
 	while (speed > 0)
 	{
-		speed--;
+		speed = speed - speed*0.01;
+		if (break_pedal) {
+			if ((speed - 60 + speed * 0.2) > 0)speed = speed - 30 + speed * 0.2;
+			else speed = 0;
+		}
 		std::this_thread::sleep_for(1s);
 	}
 }

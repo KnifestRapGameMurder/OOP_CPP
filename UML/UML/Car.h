@@ -8,6 +8,7 @@
 #include"Rudder.h"
 
 #include<thread>
+#include<Windows.h>
 
 constexpr int STRAIGHT = 0;
 constexpr int TO_THE_LEFT = -1;
@@ -31,7 +32,8 @@ private:
 	bool gas_pedal;
 	bool break_pedal;
 
-	double speed = 0;
+	int speed = 0;
+	int speed_incr = 0;
 	unsigned int max_speed;
 
 	Wheel front_right_wheel = FRONT_WHEEL;
@@ -48,6 +50,7 @@ private:
 	bool driver_in = false;
 	bool need_to_feel_tank = false;
 	bool need_to_set_trans_p = false;
+	bool need_to_set_trans_m = false;
 
 	struct ControlPanel
 	{
