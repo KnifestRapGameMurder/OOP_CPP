@@ -428,7 +428,7 @@ void Car::free_wheeling()
 	{
 		speed = speed - speed*0.01;
 		if (break_pedal) {
-			if ((speed - 60 + speed * 0.2) > 0)speed = speed - 30 + speed * 0.2;
+			if ((speed - 60 + speed * 0.2) > 0)speed = speed - 60 + speed * 0.2;
 			else speed = 0;
 		}
 		std::this_thread::sleep_for(1s);
